@@ -4,7 +4,6 @@ require_relative "charges"
 require_relative "normalize"
 
 class Basket
-  attr_reader :items, :catalogue
   @@catalogue = Catalogue.new()
 
   def initialize
