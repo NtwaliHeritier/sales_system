@@ -8,4 +8,8 @@ class BasketItem
     @product = product
     @quantity = quantity
   end
+
+  def total_price
+    (@product.price * quantity).to_f
+  end
 end
