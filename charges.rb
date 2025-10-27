@@ -1,3 +1,6 @@
+require "bigdecimal/util"
+require_relative "normalize"
+
 class Charges
   def apply(subtotal)
     raise NotImplementedError
@@ -9,7 +12,17 @@ class TransportCharges < Charges
     @charges = charges
   end
 
+  def apply(sub_total)
+    Normalize.total(sub_total.to_d + @charges.to_d)
+  end
+end
+
+class BuyOneGetSecondOnHalf < Charges
+  def initialize(discount_charge)
+    @discount_charge = discount_charge
+  end
+
   def apply(subtotal)
-    (subtotal.to_d + @charges.to_d).to_f
+    Normalize.total(subtotal.to_d - @discount_charge.to_d)
   end
 end

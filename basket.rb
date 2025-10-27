@@ -1,6 +1,7 @@
 require_relative "catalogue"
 require_relative "basket_item"
 require_relative "charges"
+require_relative "normalize"
 
 class Basket
   attr_reader :items, :catalogue
@@ -23,7 +24,7 @@ class Basket
   end
 
   def total_price
-    sub_total_price = @items.sum(&:total_price)
+    sub_total_price = Normalize.total(@items.sum(&:total_price))
 
     if sub_total_price < 50
       transport_charges = TransportCharges.new(4.95)
@@ -37,10 +38,27 @@ class Basket
   end
 end
 
-basket = Basket.new
-basket.add_product("R01")
-basket.add_product("R01", 2)
-basket.add_product("G01", 2)
+# Testing scenarios
 
-puts basket.items[0].quantity
-puts basket.total_price
+basket1 = Basket.new
+basket1.add_product("B01")
+basket1.add_product("G01")
+puts basket1.total_price
+
+basket2 = Basket.new
+basket2.add_product("R01")
+basket2.add_product("R01")
+puts basket2.total_price
+
+basket3 = Basket.new
+basket3.add_product("R01")
+basket3.add_product("G01")
+puts basket3.total_price
+
+basket4 = Basket.new
+basket4.add_product("B01")
+basket4.add_product("B01")
+basket4.add_product("R01")
+basket4.add_product("R01")
+basket4.add_product("R01")
+puts basket4.total_price
